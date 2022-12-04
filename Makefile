@@ -4,7 +4,7 @@ TARGET  = main
 SRC_DIR = src
 BIN_DIR = bin
 OBJ_DIR = obj
-DEPS    = main.c sequential_list.c
+DEPS    = main.c sequential_stack.c
 OBJ    := $(DEPS:%.c=$(OBJ_DIR)/%.o)
 space  :=
 space  +=
