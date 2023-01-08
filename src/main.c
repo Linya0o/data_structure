@@ -6,18 +6,16 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
-#include "include/queue.h"
+#include <stdbool.h>
+#include "include/string_searching.h"
 
 int main(int argc, char *argv[]) {
-    Queue q = queue(25);
-    int ch;
-    fputs(">>> now, start reading data: ", stdout);
-    while ((ch = getchar()) != '\n') push(q, ch);
-    printf("=== the head of queue: %c\n", get_head(q));
-    fputs(">>> now, start popping data.\n:::", stdout);
-    while (!is_empty(q))
-        printf(" <-%c", pop(q, 0));
+    char *s = "goodgoogle";
+    char *p = "google";
+    int index = bf(s, p);
+    printf("bf pos: %d\n", index);
+    int pos = kmp(s, p);
+    printf("kmp pos: %d\n", pos);
 
-    puts("");
     return EXIT_SUCCESS;
 }
