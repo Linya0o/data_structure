@@ -1,10 +1,10 @@
-CC      = clang
-CFLAGS  = -g -Wall -Wno-unused-parameter -pedantic -std=c17 -I.
+CC      = gcc
+CFLAGS  = -g -std=gnu2x -I.
 TARGET  = main
 SRC_DIR = src
 BIN_DIR = bin
 OBJ_DIR = obj
-DEPS    = main.c string_searching.c
+DEPS    = main.c array.c
 OBJ    := $(DEPS:%.c=$(OBJ_DIR)/%.o)
 space  :=
 space  +=
@@ -18,7 +18,7 @@ $(TARGET): $(OBJ)
 $(OBJ_DIR)/%.o : %.c
 	@$(CC) -c $(CFLAGS) $< -o $@
 
-.PHONY: path clean
+.PHONY: path clean run
 path:
 	@mkdir {$(BIN_DIR),$(OBJ_DIR),$(SRC_DIR)}
 clean:

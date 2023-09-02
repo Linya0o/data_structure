@@ -1,24 +1,25 @@
-/**
+/***********************************************************
  * Copyright (c) 2022 Author. All Rights Reserved.
  * File Name: list.h
  * Date     : 2022-11-25
  * Mail     : linya0o@163.com
- **/
-#ifndef LIST_H_
-#define LIST_H_
+***********************************************************/
+#ifndef _LIST_H_
+#define _LIST_H_
+#include <stddef.h>
 #include <stdbool.h>
 
 typedef char Item;
 typedef unsigned Position;
 typedef struct list_type *List;
 
-List list(int size);
-bool is_empty(const List list);
-unsigned length(const List list);
-Item get(const List list, Position index, Item *e);
-Position locate(const List list, Item e);
+List init_list(int size);
+bool empty(const List list);
+size_t size(const List list);
+Position get_index(const List list, Item e);
+Item *locate(const List list, Position index);
 void clear(const List list);
-List destroy(const List list); 
+List destroy(const List);
 List insert(const List list, Position index, Item e);
 Item delete(const List list, Position index, Item *e);
 List create(const List list);
