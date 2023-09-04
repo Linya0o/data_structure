@@ -7,42 +7,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "include/list.h"
+#include "include/queue.h"
 
 int main(int argc, char *argv[]) {
-    List li = init_list(10);
+    Queue q = init_queue(5);
 
-    create(li);
-    output(li);
+    create(q);
+    output(q);
+    printf("size : %zu\n", size(q));
 
-    /* visit every elements in order */
-    printf("=== visit every elements in order:\n");
-    for (int i = 0; i < size(li); i++) {
-        Item *e = locate(li, i);
-        int index = get_index(li, *e);
-        printf("[%d] = %c\n", i, *e);
-    }
-
-    /* random insertion */
-    printf("=== random insertion:\n");
+    printf("=== now, start randomly popping and push data.\n");
     srand(time(NULL));
     for (int i = 0; i < 10; i++) {
-        int num = rand() % size(li);
-        printf("[insert %c at %2d] ", 'A'+i, num);
-        insert(li, num, 'A'+i);
-        output(li);
+        int op = rand() % 2;
+        int ch = rand() % 26;
+        switch (op) {
+            case 0: {
+                printf("push %c to Queue.\n", 'a'+ch);
+                push(q, 'a'+ch);
+            } break;
+            case 1: {
+                if (empty(q))
+                    printf("Queue is now empty!\n");
+                else
+                    printf("pop %c in Queue.\n", pop(q, 0));
+            } break;
+        }
+        output(q), puts("");
     }
-
-    /* delete every elements and destroy list */
-    printf("=== delete elements:\n");
-    while (size(li)) {
-        delete(li, 0, NULL);
-        printf("size: %zu\n", size(li));
-        output(li);
-    }
-    if (empty(li))
-        printf("list now is empty!\n");
-    destroy(li);
 
     return EXIT_SUCCESS;
 }
