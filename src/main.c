@@ -7,14 +7,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "include/queue.h"
+#include "include/stack.h"
 
 int main(int argc, char *argv[]) {
-    Queue q = init_queue(5);
+    Stack s = init_stack(5);
 
-    create(q);
-    output(q);
-    printf("size : %zu\n", size(q));
+    create(s);
+    output(s);
+    printf("size : %zu\n", size(s));
 
     printf("=== now, start randomly popping and push data.\n");
     srand(time(NULL));
@@ -23,17 +23,17 @@ int main(int argc, char *argv[]) {
         int ch = rand() % 26;
         switch (op) {
             case 0: {
-                printf("push %c to Queue.\n", 'a'+ch);
-                push(q, 'a'+ch);
+                printf("push %c to Stack.\n", 'a'+ch);
+                push(s, 'a'+ch);
             } break;
             case 1: {
-                if (empty(q))
-                    printf("Queue is now empty!\n");
+                if (empty(s))
+                    printf("Stack is now empty!\n");
                 else
-                    printf("pop %c in Queue.\n", pop(q, 0));
+                    printf("pop %c in Stack.\n", pop(s));
             } break;
         }
-        output(q), puts("");
+        output(s), puts("");
     }
 
     return EXIT_SUCCESS;
