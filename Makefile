@@ -4,7 +4,7 @@ TARGET  = main
 SRC_DIR = src
 BIN_DIR = bin
 OBJ_DIR = obj
-DEPS    = main.c linked_stack.c
+DEPS    = main.c linked_stack.c linked_binary_tree.c
 OBJ    := $(DEPS:%.c=$(OBJ_DIR)/%.o)
 space  :=
 space  +=

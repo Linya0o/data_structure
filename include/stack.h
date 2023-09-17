@@ -7,22 +7,27 @@
 #ifndef _STACK_H_
 #define _STACK_H_
 
-#include <stdbool.h>
 #include <stddef.h>
+#include <stdbool.h>
 
-typedef int Item;
+#define FORMAT(a) _Generic((a), \
+    char:"%c", \
+    int:"%d", \
+    double:"%lf", \
+    default:"%p")
+
+typedef struct _node* StackData;
 typedef struct stack_type *Stack;
 
-Stack init_stack(int size);
-Stack destroy(const Stack s);
-void clear(const Stack s);
+Stack init_stack();
 bool empty(const Stack s);
 bool full(const Stack s);
-Item top(const Stack s);
-void push(const Stack s, Item i);
-Item pop(const Stack s);
 size_t size(const Stack s);
-Stack create(Stack s);
-void output(const Stack s);
+StackData top(const Stack s);
+void push(const Stack s, StackData i);
+StackData pop(const Stack s);
+Stack destroy_stack(const Stack s);
+Stack create_stack(Stack s);
+void output_stack(const Stack s);
 
 #endif

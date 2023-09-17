@@ -9,23 +9,25 @@
 #include "include/stack.h"
 
 struct stack_type {
-    Item *contents;
+    StackData *contents;
     int top;
     int size;
 };
 
-static const int BLOCK_SIZE = 5;
+static const int BLOCK_SIZE = 10;
 
-static void terminate(const char *message) {
+static
+void terminate(const char *message) {
     perror(message);
     exit(EXIT_FAILURE);
 }
 
-static bool expand(const Stack s) {
+static
+bool expand(const Stack s) {
     if (!s) return EXIT_FAILURE;
 
     int resize = s->size + BLOCK_SIZE;
-    Item *new_contents = realloc(s->contents, resize * sizeof(Item));
+    StackData *new_contents = realloc(s->contents, resize * sizeof(StackData));
     if (!new_contents)
         terminate("Error in realloc: stack could be inflated.");
 
@@ -35,31 +37,23 @@ static bool expand(const Stack s) {
     return true;
 }
 
-Stack init_stack(int size) {
+Stack init_stack() {
     Stack s = malloc(sizeof(struct stack_type));
     if (s == NULL)
         terminate("Error in create: stack could be not created.");
 
-    Item *data = malloc(size * sizeof(Item));
+    StackData *data = malloc(BLOCK_SIZE * sizeof(StackData));
     if (data == NULL) {
         free(s);
         terminate("Error in create: stack could be not created.");
     }
-    *s = (struct stack_type) { .contents = data, .top = 0, .size = size };
+    *s = (struct stack_type) { .contents = data, .top = 0, .size = BLOCK_SIZE };
 
     return s;
 }
 
-Stack destroy(const Stack s) {
-    if (!s) terminate("stack is not exist.");
-
-    free(s->contents);
-    free(s);
-
-    return EXIT_SUCCESS;
-}
-
-void clear(const Stack s) {
+static
+void clear_node(const Stack s) {
     if (!s) terminate("stack is not exist.");
     s->top = 0;
 }
@@ -74,14 +68,18 @@ bool full(const Stack s) {
     return s->top == s->size;
 }
 
-Item top(const Stack s) {
+size_t size(const Stack s) {
+    return s->top;
+}
+
+StackData top(const Stack s) {
     if (!s) terminate("stack is not exist.");
     if (empty(s)) terminate("stack is empty.");
 
     return s->contents[s->top-1];
 }
 
-void push(const Stack s, Item i) {
+void push(const Stack s, StackData i) {
     if (!s) terminate("stack is not exist.");
     if (full(s)) {
         if (!expand(s)) return;
@@ -90,18 +88,23 @@ void push(const Stack s, Item i) {
     s->contents[s->top++] = i;
 }
 
-Item pop(const Stack s) {
+StackData pop(const Stack s) {
     if (!s) terminate("stack is not exist.");
     if (empty(s)) terminate("Error in pop: stack is empty.");
 
     return s->contents[--s->top];
 }
 
-size_t size(const Stack s) {
-    return s->top;
+Stack destroy_stack(const Stack s) {
+    if (!s) terminate("stack is not exist.");
+
+    free(s->contents);
+    free(s);
+
+    return EXIT_SUCCESS;
 }
 
-Stack create(Stack s) {
+Stack create_stack(Stack s) {
     if (!s) terminate("stack doesn't exsit.");
 
     printf(">>> start reading the data(e.g. abcd...<cr>)\n");
@@ -113,13 +116,13 @@ Stack create(Stack s) {
     return s;
 }
 
-void output(const Stack s) {
+void output_stack(const Stack s) {
     if (!s) terminate("stack doesn't exsit.");
 
     printf("::: Stack(%zu):[", size(s));
     for (int i = 0; i < s->top; i++) {
         i && printf(" ");
-        printf("%c", s->contents[i]);
+        printf(FORMAT(s->contents[i]), s->contents[i]);
         fflush(stdout);
     }
     printf("\n");
